@@ -35,7 +35,7 @@ $(document).ready(function () {
         // Make prediction by calling api /predict
         $.ajax({
             type: 'POST',
-            url: '/predict',
+            url: '/crack-joke',
             data: form_data,
             contentType: false,
             cache: false,
