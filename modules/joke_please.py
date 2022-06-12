@@ -1,7 +1,6 @@
 import os
 
-import PIL.Image as Image
-from flask import request, url_for
+from flask import request
 from flask_restful import Resource
 from werkzeug.utils import secure_filename
 
