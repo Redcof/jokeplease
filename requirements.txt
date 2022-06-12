@@ -1,5 +1,5 @@
 Flask
 flask-restful
-tensorflow == 2.4.1
+tensorflow >= 2.4.1
 Pillow
 Keras
