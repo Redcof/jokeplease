@@ -1,11 +1,12 @@
 {% extends "base.html" %} {% block content %}
 <style>
 h2 {text-align: center;}
-h3 {text-align: center;}
+h4 {text-align: center;}
+div {text-align: center;}
 p {text-align: center;}
 </style>
 <h2>Lets upload an image</h2>
-<h3>We shall try to crack a joke or funny sentence on it!</h3>
+<h4>The AI shall try to generate ridiculous jokes. No meaning. No humor. Just fun!</h4>
 
 <div>
     <form align="center" id="upload-file" method="post" enctype="multipart/form-data">
@@ -27,9 +28,9 @@ p {text-align: center;}
 
     <div class="loader" style="display:none;"></div>
 
-    <h3 align="center" id="result">
+    <div align="center" id="result">
         <span> </span>
-    </h3>
+    </div>
 
 </div>
 

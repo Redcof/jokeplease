@@ -26,7 +26,10 @@ $(document).ready(function () {
 
     // Predict
     $('#btn-predict').click(function () {
-        var form_data = new FormData($('#upload-file')[0]);
+        var form_data = new FormData();
+        var imagefile = $('#upload-file')[0][0];
+        // parepare form multipart form data object
+        form_data.append("image", imagefile.files[0]);
 
         // Show loading animation
         $(this).hide();
@@ -43,11 +46,19 @@ $(document).ready(function () {
             async: true,
             success: function (data) {
                 // Get and display the result
+                $('#btn-predict').show();
                 $('.loader').hide();
                 $('#result').fadeIn(600);
-                $('#result').text(' Result:  ' + data);
+                $('#result').text(' Result:  ' + data.message);
                 console.log('Success!');
             },
+            error: function (data) {
+                $('#btn-predict').show();
+                $('.loader').hide();
+                $('#result').fadeIn(600);
+                $('#result').text("Sorry!! An error occured");
+                console.err(data);
+            }
         });
     });
 

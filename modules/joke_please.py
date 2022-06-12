@@ -30,14 +30,18 @@ class JokePlease(Resource):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             # read image for code
-            model = app.config["MODEL"]
-            resp = model.evaluate(filename)
-            if resp[1] is False:
-                resp = {"message": resp[0]}, 400
-            elif resp[0]["code"] == "":
-                resp = {"message": "No code was found"}, 400
-            else:
-                resp = {"message": resp[0], "url": url_for("fileserve", filename=filename)}, 200
+            try:
+                model = app.config["MODEL"]
+                filename = app.config["UPLOAD_FOLDER"] + "/" + filename
+                resp = model.evaluate(filename)
+                resp = resp[:-1]
+                if resp:
+                    resp = {"message": ' '.join(resp)}, 200
+                else:
+                    resp = {"message": "Sorry!! Unable to crack jokes now."}, 400
+            except Exception as e:
+                resp = {"message": "Unable to crack jokes now!! ", error: str(e)}, 500
+            os.remove(filename)
             return resp
         else:
             resp = {"message": "Allowed file types are %s" % ALLOWED_EXTENSIONS}, 400
