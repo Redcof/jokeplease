@@ -1,7 +1,5 @@
 Flask
 flask-restful
-gunicorn
-tensorflow >= 2.4.1
-pandas
+tensorflow == 2.4.1
 Pillow
 Keras

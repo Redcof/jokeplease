@@ -2,8 +2,6 @@ import pathlib
 import re
 import tensorflow as tf
 
-import pandas as pd
-
 current_path = pathlib.Path(__file__).parents[0]
 
 
@@ -11,12 +9,12 @@ class FlikerTokenizer(object):
     # Create the vocabulary & the counter for the captions
 
     def __init__(self):
-        df = pd.read_csv(current_path / "weights/captions.txt")
-        annotations = df['caption']  # write your code here
+        with open(current_path / "weights/captions.txt", "r") as fp:
+            lines = fp.readlines()
+            annotations = [line.split(",")[1].strip(" ") for line in lines]
 
         # add the <start> & <end> token to all those captions as well
-        annotations = annotations.apply(lambda x: f"<start> {x} <end>")
-        df['Captions'] = annotations
+        annotations = [f"<start> {x} <end>" for x in annotations]
 
         # create the tokenizer
         top_freq_words = 5000
@@ -26,13 +24,13 @@ class FlikerTokenizer(object):
                                                           oov_token="UNK",
                                                           filters=special_chars)
         # fit captions
-        tokenizer.fit_on_texts(df.Captions)
+        tokenizer.fit_on_texts(annotations)
 
         # Adding PAD to tokenizer list
         tokenizer.word_index['PAD'] = 0
         tokenizer.index_word[0] = 'PAD'
 
-        cap_seqs = tokenizer.texts_to_sequences(df.Captions)
+        cap_seqs = tokenizer.texts_to_sequences(annotations)
         # Pad each vector
         cap_vector = tf.keras.preprocessing.sequence.pad_sequences(cap_seqs,
                                                                    padding='post')
